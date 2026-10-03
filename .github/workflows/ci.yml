@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        compiler:
+          - cc: gcc
+            cxx: g++
+          - cc: clang
+            cxx: clang++
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake ninja-build libeigen3-dev
+
+      - name: Configure, build and test
+        env:
+          CC: ${{ matrix.compiler.cc }}
+          CXX: ${{ matrix.compiler.cxx }}
+        run: |
+          cmake --preset ci
+          cmake --build build/ci
+          ctest --preset ci
+
+      - name: Install and consumer check
+        run: |
+          cmake --build build/ci --target install
+          cmake -S tests/consumer -B build/consumer \
+            -DCMAKE_PREFIX_PATH="$PWD/install/ci"
+          cmake --build build/consumer
+          ./build/consumer/consumer
