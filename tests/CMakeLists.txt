@@ -11,8 +11,8 @@ set(INSTALL_GTEST OFF CACHE BOOL "" FORCE)
 
 FetchContent_MakeAvailable(googletest)
 
-add_executable(pkg_test test_pkg.cpp)
-target_link_libraries(pkg_test PRIVATE pkg::pkg GTest::gtest_main)
+add_executable(mr_test test_mr.cpp)
+target_link_libraries(mr_test PRIVATE mr::mr GTest::gtest_main)
 
 include(GoogleTest)
-gtest_discover_tests(pkg_test)
+gtest_discover_tests(mr_test)

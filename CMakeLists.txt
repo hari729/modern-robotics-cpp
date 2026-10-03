@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 3.20)
-project(pkg VERSION 0.1.0 LANGUAGES CXX)
+project(mr VERSION 0.1.0 LANGUAGES CXX)
 
 # ---- Options ----
-option(PKG_BUILD_TESTS "Build tests" ${PROJECT_IS_TOP_LEVEL})
-option(PKG_BUILD_EXAMPLES "Build examples" ${PROJECT_IS_TOP_LEVEL})
-option(PKG_INSTALL "Generate install targets" ${PROJECT_IS_TOP_LEVEL})
+option(MR_BUILD_TESTS "Build tests" ${PROJECT_IS_TOP_LEVEL})
+option(MR_BUILD_EXAMPLES "Build examples" ${PROJECT_IS_TOP_LEVEL})
+option(MR_INSTALL "Generate install targets" ${PROJECT_IS_TOP_LEVEL})
 
 # ---- Helpers ----
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
@@ -13,50 +13,50 @@ include(CompilerWarnings)
 # ---- Dependencies ----
 find_package(Eigen3 3.4 QUIET NO_MODULE)
 if(NOT Eigen3_FOUND)
-  message(STATUS "pkg: Eigen3 not found; building without it")
+  message(STATUS "mr: Eigen3 not found; building without it")
 endif()
 
 # ---- Library ----
-add_library(pkg src/pkg.cpp)
-add_library(pkg::pkg ALIAS pkg)
+add_library(mr src/mr.cpp)
+add_library(mr::mr ALIAS mr)
 
-target_compile_features(pkg PUBLIC cxx_std_20)
-set_target_properties(pkg PROPERTIES CXX_EXTENSIONS OFF)
+target_compile_features(mr PUBLIC cxx_std_20)
+set_target_properties(mr PROPERTIES CXX_EXTENSIONS OFF)
 
-target_include_directories(pkg
+target_include_directories(mr
   PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
-pkg_set_warnings(pkg)
+mr_set_warnings(mr)
 
 if(Eigen3_FOUND)
-  set(PKG_HAS_EIGEN3 ON)
-  target_link_libraries(pkg PUBLIC Eigen3::Eigen)
-  target_compile_definitions(pkg PUBLIC PKG_HAS_EIGEN3)
+  set(MR_HAS_EIGEN3 ON)
+  target_link_libraries(mr PUBLIC Eigen3::Eigen)
+  target_compile_definitions(mr PUBLIC MR_HAS_EIGEN3)
 else()
-  set(PKG_HAS_EIGEN3 OFF)
+  set(MR_HAS_EIGEN3 OFF)
 endif()
 
 # ---- Examples ----
-if(PKG_BUILD_EXAMPLES)
+if(MR_BUILD_EXAMPLES)
   add_subdirectory(examples)
 endif()
 
 # ---- Tests ----
-if(PKG_BUILD_TESTS)
+if(MR_BUILD_TESTS)
   enable_testing()
   add_subdirectory(tests)
 endif()
 
 # ---- Install & Export ----
-if(PKG_INSTALL)
+if(MR_INSTALL)
   include(GNUInstallDirs)
   include(CMakePackageConfigHelpers)
 
-  install(TARGETS pkg
-    EXPORT pkgTargets
+  install(TARGETS mr
+    EXPORT mrTargets
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
@@ -67,38 +67,38 @@ if(PKG_INSTALL)
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
   )
 
-  install(EXPORT pkgTargets
-    FILE pkgTargets.cmake
-    NAMESPACE pkg::
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/pkg
+  install(EXPORT mrTargets
+    FILE mrTargets.cmake
+    NAMESPACE mr::
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/mr
   )
 
   configure_package_config_file(
-    ${CMAKE_CURRENT_SOURCE_DIR}/cmake/pkgConfig.cmake.in
-    ${CMAKE_CURRENT_BINARY_DIR}/pkgConfig.cmake
-    INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/pkg
+    ${CMAKE_CURRENT_SOURCE_DIR}/cmake/mrConfig.cmake.in
+    ${CMAKE_CURRENT_BINARY_DIR}/mrConfig.cmake
+    INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/mr
   )
 
   write_basic_package_version_file(
-    ${CMAKE_CURRENT_BINARY_DIR}/pkgConfigVersion.cmake
+    ${CMAKE_CURRENT_BINARY_DIR}/mrConfigVersion.cmake
     VERSION ${PROJECT_VERSION}
     COMPATIBILITY SameMajorVersion
   )
 
   install(FILES
-    ${CMAKE_CURRENT_BINARY_DIR}/pkgConfig.cmake
-    ${CMAKE_CURRENT_BINARY_DIR}/pkgConfigVersion.cmake
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/pkg
+    ${CMAKE_CURRENT_BINARY_DIR}/mrConfig.cmake
+    ${CMAKE_CURRENT_BINARY_DIR}/mrConfigVersion.cmake
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/mr
   )
 endif()
 
 # ---- CPack ----
 if(PROJECT_IS_TOP_LEVEL)
-  set(CPACK_PACKAGE_NAME pkg)
+  set(CPACK_PACKAGE_NAME mr)
   set(CPACK_PACKAGE_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
   set(CPACK_PACKAGE_VERSION_MINOR ${PROJECT_VERSION_MINOR})
   set(CPACK_PACKAGE_VERSION_PATCH ${PROJECT_VERSION_PATCH})
-  set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "pkg: a C++ library")
+  set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "mr: a C++ library")
   set(CPACK_GENERATOR "TGZ")
   include(CPack)
 endif()

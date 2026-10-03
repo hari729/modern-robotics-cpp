@@ -1,8 +1,8 @@
 #include <iostream>
 
-#include "pkg/pkg.hpp"
+#include "mr/mr.hpp"
 
 int main() {
-  std::cout << pkg::greet("consumer") << '\n';
+  std::cout << mr::greet("consumer") << '\n';
   return 0;
 }

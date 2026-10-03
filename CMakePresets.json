@@ -16,9 +16,9 @@
       "inherits": "default",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
-        "PKG_BUILD_TESTS": "ON",
-        "PKG_BUILD_EXAMPLES": "ON",
-        "PKG_INSTALL": "ON"
+        "MR_BUILD_TESTS": "ON",
+        "MR_BUILD_EXAMPLES": "ON",
+        "MR_INSTALL": "ON"
       }
     },
     {
@@ -26,9 +26,9 @@
       "inherits": "default",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release",
-        "PKG_BUILD_TESTS": "ON",
-        "PKG_BUILD_EXAMPLES": "ON",
-        "PKG_INSTALL": "ON"
+        "MR_BUILD_TESTS": "ON",
+        "MR_BUILD_EXAMPLES": "ON",
+        "MR_INSTALL": "ON"
       }
     },
     {

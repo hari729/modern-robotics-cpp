@@ -62,8 +62,8 @@ compile_commands.json
 *.bak
 *.swp
 
-# vcpkg
-vcpkg_installed/
+# vcmr
+vcmr_installed/
 
 # debug information files
 *.dwo

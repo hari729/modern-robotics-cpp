@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.20)
-project(pkg_consumer LANGUAGES CXX)
+project(mr_consumer LANGUAGES CXX)
 
-find_package(pkg REQUIRED)
+find_package(mr REQUIRED)
 
 add_executable(consumer main.cpp)
-target_link_libraries(consumer PRIVATE pkg::pkg)
+target_link_libraries(consumer PRIVATE mr::mr)
