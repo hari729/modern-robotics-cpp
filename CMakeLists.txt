@@ -11,7 +11,7 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 include(CompilerWarnings)
 
 # ---- Dependencies ----
-find_package(Eigen3 3.4 QUIET NO_MODULE)
+find_package(Eigen3 QUIET NO_MODULE)
 if(NOT Eigen3_FOUND)
   message(STATUS "mr: Eigen3 not found; building without it")
 endif()
