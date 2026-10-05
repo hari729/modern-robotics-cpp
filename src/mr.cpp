@@ -91,4 +91,18 @@ std::tuple<Matrix<double, 6, 1>, double> log(const Matrix4d &T) {
   S.block<3, 1>(3, 0) = v;
   return std::make_tuple(S, theta);
 }
+std::tuple<Matrix<double, 6, 1>, double>
+extractScrew(const Matrix<double, 6, 1> &V) {
+  Vector3d w = V.block<3, 1>(0, 0);
+  Vector3d v = V.block<3, 1>(3, 0);
+  Matrix<double, 6, 1> S;
+  double theta;
+  if (not w.isApprox(Vector3d::Zero(), 1e-6)) {
+    theta = w.norm();
+  } else {
+    theta = v.norm();
+  }
+  S = V / theta;
+  return std::make_tuple(S, theta);
+}
 } // namespace mr

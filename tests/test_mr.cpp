@@ -49,5 +49,14 @@ TEST(mr, log6) {
   Eigen::Matrix<double, 6, 1> S{
       {0.5774, -0.5774, 0.5774, 1.0548, -1.0548, -0.6772}};
   auto [Scalc, theta] = mr::log(T);
-  EXPECT_TRUE(Scalc.isApprox(S, 1e-3));
+  EXPECT_TRUE(Scalc.isApprox(S, 1e-4));
+}
+
+TEST(mr, twist_screw) {
+  Eigen::Matrix<double, 6, 1> V{{0, 1, 2, 3, 0, 0}};
+  double theta_expected = std::sqrt(5);
+  Eigen::Matrix<double, 6, 1> S_expected = V / theta_expected;
+  auto [S, theta] = mr::extractScrew(V);
+  EXPECT_EQ(theta, theta_expected);
+  EXPECT_EQ(S, S_expected);
 }

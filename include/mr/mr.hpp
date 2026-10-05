@@ -17,4 +17,6 @@ Matrix4d exp(const Matrix<double, 6, 1> &S, const double &theta);
 Matrix<double, 6, 1> getScrew(const Vector3d &s, const Vector3d &q,
                               const double &h);
 std::tuple<Matrix<double, 6, 1>, double> log(const Matrix4d &T);
+std::tuple<Matrix<double, 6, 1>, double>
+extractScrew(const Matrix<double, 6, 1> &V);
 } // namespace mr
